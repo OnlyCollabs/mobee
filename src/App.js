@@ -1,29 +1,51 @@
 import React, { useEffect, useState } from "react";
+import { fetchData } from "./Utilities/fetchMovie";
 
 const App = () => {
   const [movie, setMovie] = useState("");
-  const maxPage = 500;
+  const [movieArr, setMovieArr] = useState([]);
   const maxMovieNo = 19;
 
-  const fetchData = async () => {
-    const pageNo = Math.floor(Math.random() * maxPage) + 1;
-    const englishUrl = `https://api.themoviedb.org/3/discover/movie?api_key=f556ec5937fcffab8354d8415d6db8f8&language=en-US&sort_by=popularity.desc&page=${pageNo}`;
-    const response = await fetch(englishUrl, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    return response.json();
+  const splitMovie = (movie) => {
+    let movieUpperCase = movie.toUpperCase();
+    let temp = movieUpperCase.split("");
+    setMovieArr(temp);
+  };
+
+  const containsSpecialChar = (char) => {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    return specialChars.test(char);
   };
 
   useEffect(() => {
     const selectMovie = Math.floor(Math.random() * maxMovieNo) + 1;
-    fetchData().then((data) => setMovie(data.results[selectMovie]));
+    fetchData().then((data) => setMovie(data.results[selectMovie].title));
   }, []);
 
-  console.log(movie);
+  useEffect(() => {
+    splitMovie(movie);
+  }, [movie]);
 
-  return <div>{movie.title}</div>;
+  return (
+    <div className="flex flex-wrap m-3">
+      {movieArr.map((item, index) => {
+        return item === " " ? (
+          <span className="mx-4" key={index}></span>
+        ) : (
+          <span
+            className={`${
+              containsSpecialChar(item)
+                ? "p-2"
+                : "p-3 px-4 border-2 border-solid border-black"
+            }  mx-1 text-2xl font-bold`}
+            key={index}
+          >
+            {item}
+          </span>
+        );
+      })}
+    </div>
+  );
 };
 
 export default App;
