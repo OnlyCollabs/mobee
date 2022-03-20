@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 
 const App = () => {
   const [movie, setMovie] = useState("");
+  // const [key, setKey] = useState(0);
   const maxPage = 500;
   const maxMovieNo = 19;
+  const regex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g;
 
   const fetchData = async () => {
     const pageNo = Math.floor(Math.random() * maxPage) + 1;
@@ -18,12 +20,38 @@ const App = () => {
 
   useEffect(() => {
     const selectMovie = Math.floor(Math.random() * maxMovieNo) + 1;
-    fetchData().then((data) => setMovie(data.results[selectMovie]));
+    fetchData().then((data) => setMovie(data.results[selectMovie].title));
   }, []);
 
-  console.log(movie);
+  const words = movie.split(" ");
 
-  return <div>{movie.title}</div>;
+  // console.log(words);
+
+  const letters = words.map((e) => {
+    return e.split("");
+  });
+  // console.log(letters);
+
+  return (
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      {letters.map((letter) =>
+        letter.map((l) =>
+          l.replace(/[^a-zA-Z0-9]/g, "") !== "" ? (
+            <p
+              // key={key}
+              style={{
+                padding: "0.5rem",
+                border: "1px solid black",
+                margin: "0.5rem",
+              }}
+            >
+              {l.toUpperCase()}
+            </p>
+          ) : null
+        )
+      )}
+    </div>
+  );
 };
 
 export default App;
