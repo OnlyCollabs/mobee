@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { fetchData } from "./Utilities/fetchMovie";
 
 const App = () => {
-  const [movie, setMovie] = useState("");
-  const [movieArr, setMovieArr] = useState([]);
+  const [movie, setMovie] = useState(""); // const [key, setKey] = useState(0);
+  const maxPage = 500;
   const maxMovieNo = 19;
+  const regex = /^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g;
 
-  const splitMovie = (movie) => {
-    let movieUpperCase = movie.toUpperCase();
-    let temp = movieUpperCase.split("");
-    setMovieArr(temp);
+  const fetchData = async () => {
+    const pageNo = Math.floor(Math.random() * maxPage) + 1;
+    const englishUrl = `https://api.themoviedb.org/3/discover/movie?api_key=f556ec5937fcffab8354d8415d6db8f8&language=en-US&sort_by=popularity.desc&page=${pageNo}`;
+    const response = await fetch(englishUrl, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.json();
   };
 
   const containsSpecialChar = (char) => {
@@ -22,28 +27,31 @@ const App = () => {
     fetchData().then((data) => setMovie(data.results[selectMovie].title));
   }, []);
 
-  useEffect(() => {
-    splitMovie(movie);
-  }, [movie]);
+  const words = movie.split(" "); // console.log(words);
 
+  const letters = words.map((e) => {
+    return e.split("");
+  }); // console.log(letters);
   return (
-    <div className="flex flex-wrap m-3">
-      {movieArr.map((item, index) => {
-        return item === " " ? (
-          <span className="mx-4" key={index}></span>
-        ) : (
-          <span
-            className={`${
-              containsSpecialChar(item)
-                ? "p-2"
-                : "p-3 px-4 border-2 border-solid border-black"
-            }  mx-1 text-2xl font-bold`}
-            key={index}
-          >
-            {item}
-          </span>
-        );
-      })}
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
+      {letters.map((letter) => (
+        <div className="mr-6">
+          <div>
+            {letter.map((l, index) => (
+              <span
+                key={index}
+                className={`${
+                  containsSpecialChar(l)
+                    ? "p-2"
+                    : "p-3 px-4 border-2 border-solid border-black"
+                } mx-1 text-2xl font-bold`}
+              >
+                {l.toUpperCase()}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 };
