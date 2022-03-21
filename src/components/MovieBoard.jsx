@@ -18,7 +18,7 @@ const MovieBoard = () => {
   const words = movie.split(" ");
 
   const letters = words.map((e) => {
-    return e.split("");
+    return e.toUpperCase().split("");
   });
 
   return (
@@ -30,13 +30,17 @@ const MovieBoard = () => {
               {letter.map((l, index) => (
                 <div
                   key={index}
+                  style={{ minWidth: "4rem", minHeight: "4rem" }}
                   className={`${
                     containsSpecialChar(l)
                       ? "p-2"
                       : "p-4 border-2 border-solid border-black"
-                  } mx-1 text-2xl font-bold box-border`}
+                  } mx-1 text-2xl font-bold box-border text-center`}
                 >
-                  {l.toUpperCase()} {index}
+                  {l === "A" || l === "E" || l === "I" || l === "O" || l === "U"
+                    ? `${l}`
+                    : ""}
+                  {console.log(movie)}
                 </div>
               ))}
             </div>
