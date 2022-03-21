@@ -18,6 +18,11 @@ const App = () => {
     return response.json();
   };
 
+  const containsSpecialChar = (char) => {
+    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    return specialChars.test(char);
+  };
+
   useEffect(() => {
     const selectMovie = Math.floor(Math.random() * maxMovieNo) + 1;
     fetchData().then((data) => setMovie(data.results[selectMovie].title));
@@ -34,22 +39,26 @@ const App = () => {
 
   return (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
-      {letters.map((letter) =>
-        letter.map((l) =>
-          l.replace(/[^a-zA-Z0-9]/g, "") !== "" ? (
-            <p
-              // key={key}
-              style={{
-                padding: "0.5rem",
-                border: "1px solid black",
-                margin: "0.5rem",
-              }}
-            >
-              {l.toUpperCase()}
-            </p>
-          ) : null
-        )
-      )}
+      {letters.map((letter) => (
+        <div style={{ display: "flex" }}>
+          {letter.map((l, index) =>
+            l === " " ? (
+              <span className="mx-4"></span>
+            ) : (
+              <p
+                key={index}
+                className={`${
+                  containsSpecialChar(l)
+                    ? "p-2"
+                    : "p-3 px-4 border-2 border-solid border-black"
+                }mx-1 text-2xl font-bold`}
+              >
+                {l.toUpperCase()}
+              </p>
+            )
+          )}
+        </div>
+      ))}
     </div>
   );
 };
