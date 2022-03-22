@@ -6,7 +6,7 @@ const MovieBoard = () => {
   const maxMovieNo = 19;
 
   const containsSpecialChar = (char) => {
-    const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+    const specialChars = /\W|_/g;
     return specialChars.test(char);
   };
 
