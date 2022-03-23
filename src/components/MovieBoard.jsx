@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { fetchData } from "../Utilities/fetchMovie";
 
 const MovieBoard = () => {
@@ -20,6 +20,12 @@ const MovieBoard = () => {
   const letters = words.map((e) => {
     return e.toUpperCase().split("");
   });
+
+  const handleKey = (e) => {
+    console.log(e.code.slice(3));
+  }
+
+  useKeyPress(handleKey);
 
   return (
     <div>
@@ -50,5 +56,23 @@ const MovieBoard = () => {
     </div>
   );
 };
+
+const useKeyPress = (cb) => {
+  const callbackRef = useRef(cb);
+
+  useEffect(()=>{
+    callbackRef.current = cb;
+  });
+
+  useEffect(()=>{
+    const handle = (ev) => {
+      if(ev.code){
+        callbackRef.current(ev)
+      }
+    }
+    document.addEventListener("keypress", handle);
+    return () => document.removeEventListener("keypress", handle)
+  }, []);
+}
 
 export default MovieBoard;
