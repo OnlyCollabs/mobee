@@ -22,7 +22,13 @@ const MovieBoard = () => {
   });
 
   const handleKey = (e) => {
-    console.log(e.code.slice(3));
+    if(e.code.slice(0,3) === "Key"){
+      console.log(e.code.slice(3));
+    } else if(e.code.slice(0,5) === "Digit"){
+      console.log(e.code.slice(5));
+    } else {
+      console.log(e.code);
+    }    
   }
 
   useKeyPress(handleKey);
