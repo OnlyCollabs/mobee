@@ -1,5 +1,5 @@
 import React from "react";
-import MovieBoard from "./components/MovieBoard";
+import MovieBoard from "./components/MovieBoard/MovieBoard";
 
 const App = () => {
   return (
