@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { fetchData } from "../../Utilities/fetchMovie";
-import { Letter } from "./Letter";
+import { Word } from "./Word";
 
 const MovieBoard = () => {
   const [movie, setMovie] = useState("");
+  const [keyPressed, setKeyPressed] = useState("");
   const maxMovieNo = 19;
 
   const useKeyPress = (cb) => {
@@ -14,9 +15,6 @@ const MovieBoard = () => {
     });
 
     useEffect(() => {
-      const selectMovie = Math.floor(Math.random() * maxMovieNo) + 1;
-      fetchData().then((data) => setMovie(data.results[selectMovie].title));
-
       const handle = (ev) => {
         if (ev.code) {
           callbackRef.current(ev);
@@ -27,19 +25,24 @@ const MovieBoard = () => {
     }, []);
   };
 
+  useEffect(() => {
+    const selectMovie = Math.floor(Math.random() * maxMovieNo) + 1;
+    fetchData().then((data) => setMovie(data.results[selectMovie].title));
+  }, []);
+
   const words = movie.split(" ");
 
-  const letters = words.map((e) => {
+  const lettersArray = words.map((e) => {
     return e.toUpperCase().split("");
   });
 
   const handleKey = (e) => {
     if (e.code.slice(0, 3) === "Key") {
-      console.log(e.keyCode);
+      setKeyPressed(e.code.slice(3));
     } else if (e.code.slice(0, 5) === "Digit") {
-      console.log(e.keyCode);
+      setKeyPressed(e.code.slice(5));
     } else {
-      console.log(e.keyCode);
+      console.log(e.code);
     }
   };
 
@@ -48,11 +51,11 @@ const MovieBoard = () => {
   return (
     <div>
       <div className=" flex flex-wrap justify-center items-center">
-        {letters.map((letter, key) => (
-          <Letter letter={letter} key={key} />
+        {lettersArray.map((letter, key) => (
+          <Word letter={letter} key={key} keyPressed={keyPressed} />
         ))}
-        {console.log(movie)}
       </div>
+      {console.log(movie)}
     </div>
   );
 };
