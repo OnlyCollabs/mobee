@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
-import { fetchData } from "../../Utilities/fetchMovie";
+import { useContext } from "react";
+import { GameCtx } from "../../Context/GameContext";
 import { Word } from "./Word";
 
 const MovieBoard = () => {
-  const [movie, setMovie] = useState("");
+  const ctx = useContext(GameCtx);
+
   const [keyPressed, setKeyPressed] = useState("");
-  const maxMovieNo = 19;
 
   const useKeyPress = (cb) => {
     const callbackRef = useRef(cb);
@@ -25,16 +26,13 @@ const MovieBoard = () => {
     }, []);
   };
 
-  useEffect(() => {
-    const selectMovie = Math.floor(Math.random() * maxMovieNo) + 1;
-    fetchData().then((data) => setMovie(data.results[selectMovie].title));
-  }, []);
 
-  const words = movie.split(" ");
-
+  const words = ctx.movie.split(" ");
   const lettersArray = words.map((e) => {
     return e.toUpperCase().split("");
   });
+
+  console.log(lettersArray);
 
   const handleKey = (e) => {
     if (e.code.slice(0, 3) === "Key") {
@@ -49,13 +47,12 @@ const MovieBoard = () => {
   useKeyPress(handleKey);
 
   return (
-    <div>
+      <div>
       <div className=" flex flex-wrap justify-center items-center">
         {lettersArray.map((letter, key) => (
           <Word letter={letter} key={key} keyPressed={keyPressed} />
         ))}
       </div>
-      {console.log(movie)}
     </div>
   );
 };
