@@ -32,7 +32,7 @@ const MovieBoard = () => {
     return e.toUpperCase().split("");
   });
 
-  console.log(lettersArray);
+  //console.log(lettersArray);
 
   const handleKey = (e) => {
     if (e.code.slice(0, 3) === "Key") {
