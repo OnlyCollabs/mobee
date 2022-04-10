@@ -1,7 +1,7 @@
 import React from "react";
 import MovieBoard from "./components/MovieBoard/MovieBoard";
 import { GameContextProvider } from "./Context/GameContextProvider";
-import { ReactQueryDevtools } from "react-query-devtools";
+//import { ReactQueryDevtools } from "react-query-devtools";
 
 const App = () => {
   return (
