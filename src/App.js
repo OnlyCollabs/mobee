@@ -9,7 +9,7 @@ const App = () => {
       <div className="h-screen flex items-center justify-center">
         <MovieBoard />
       </div>
-      <ReactQueryDevtools initialIsOpen/>
+      {/*<ReactQueryDevtools initialIsOpen/>*/}
     </GameContextProvider>
   );
 };

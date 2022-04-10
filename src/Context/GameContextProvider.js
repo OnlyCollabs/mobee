@@ -39,6 +39,7 @@ export const GameContextProvider = (props) => {
     return { id, status };
   }
 
+  // eslint-disable-next-line no-unused-vars
   const { data, status } = useQuery(["poll", contract?.id], fakePoll, {
     initialData: { status: "False" },
     refetchInterval: refetchInterval,
@@ -57,6 +58,7 @@ export const GameContextProvider = (props) => {
 
   useEffect(()=> {
     createContractMutation()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const gameContext ={
